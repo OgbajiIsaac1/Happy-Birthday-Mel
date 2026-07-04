@@ -1,0 +1,44 @@
+Assets Configuration Guide
+==========================
+
+To fully personalize this birthday surprise website for Melvina Igboanugo:
+
+1. BACKGROUND MUSIC
+-------------------
+- Rename your chosen audio file to: `birthday-music.mp3`
+- Place it directly inside the `public/` folder:
+  `public/birthday-music.mp3`
+- If this file is missing, the player will fail silently and run in a elegant mute mode without breaking.
+
+2. PHOTOS GALLERY
+-----------------
+- Place her photos inside the `public/` folder, e.g. as `public/images/photo1.jpg`, `public/images/photo2.jpg`, etc.
+- Open `src/components/MemoryGallery.tsx` and look at the `MEMORIES` array.
+- Replace the placeholder Unsplash URLs with paths referencing your local files, for example:
+  ```typescript
+  const MEMORIES: Memory[] = [
+    {
+      id: 1,
+      url: '/images/photo1.jpg',
+      caption: 'A beautiful memory',
+      description: 'Your custom description here...'
+    },
+    // ...
+  ];
+  ```
+- Recommended photo aspect ratio: Vertical portraits (e.g. 4:5 or 3:4) look best on mobile and inside the responsive grid cards.
+
+3. CUSTOMIZING MESSAGES & NAME
+------------------------------
+- Her Name: Open `src/components/LaunchScreen.tsx`, `src/components/HeroSection.tsx`, `src/components/MemoryGallery.tsx`, `src/components/ShareButton.tsx` and `src/app/page.tsx` to edit "Melvina Igboanugo" to her preferred name.
+- Birthday Date: Open `src/components/Countdown.tsx` and adjust `BIRTHDAY_MONTH` and `BIRTHDAY_DAY` variables if you want to reuse this for someone else or test different dates.
+- Personal Message Card: Open `src/components/HeroSection.tsx` and `src/components/FinalMessage.tsx` to modify the paragraphs of text.
+
+4. DEPLOYMENT & DATABASE (SUPABASE)
+-----------------------------------
+- Run the SQL script found in `implementation_plan.md` in the Supabase SQL editor to create the `wishes`, `prayers`, and `blessings` tables.
+- Add your Supabase credentials to `.env.local`:
+  - `NEXT_PUBLIC_SUPABASE_URL`
+  - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- When deploying to Vercel, make sure to add these two variables in the Vercel project Settings under "Environment Variables".
+- The client library has a fallback local storage database built-in, so if Supabase is not configured yet, it will mock the database and store wishes, prayers, and blessings in the browser's local storage so you can fully test the functionality offline!
