@@ -35,8 +35,10 @@ export default function BlessingsBoard() {
 
   useEffect(() => {
     const fetchBlessings = async () => {
+      if (!supabase) { setLoading(false); return; }
+      const db = supabase;
       try {
-        const { data, error } = await supabase
+        const { data, error } = await db
           .from('blessings')
           .select('*')
           .order('created_at', { ascending: true }); // Display in chronological order for the cloud
@@ -81,8 +83,11 @@ export default function BlessingsBoard() {
 
     setSubmitting(true);
 
+    if (!supabase) { setSubmitting(false); setErrorMsg('Database not available'); return; }
+    const db = supabase;
+
     try {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('blessings')
         .insert([{ blessing: formattedBlessing }])
         .select();

@@ -41,8 +41,10 @@ export default function PrayerWall() {
 
   useEffect(() => {
     const fetchPrayers = async () => {
+      if (!supabase) { setLoading(false); return; }
+      const db = supabase;
       try {
-        const { data, error } = await supabase
+        const { data, error } = await db
           .from('prayers')
           .select('*')
           .order('created_at', { ascending: false });
@@ -95,6 +97,8 @@ export default function PrayerWall() {
     const cleanMessage = filterProfanity(trimmedMessage);
 
     setSubmitting(true);
+
+    if (!supabase) { setSubmitting(false); setErrorMsg('Database not available'); return; }
 
     try {
       const { data, error } = await supabase

@@ -42,8 +42,10 @@ export default function WishesWall() {
 
   useEffect(() => {
     const fetchWishes = async () => {
+      if (!supabase) { setLoading(false); return; }
+      const db = supabase;
       try {
-        const { data, error } = await supabase
+        const { data, error } = await db
           .from('wishes')
           .select('*')
           .order('created_at', { ascending: false });
@@ -96,6 +98,8 @@ export default function WishesWall() {
     const cleanMessage = filterProfanity(trimmedMessage);
 
     setSubmitting(true);
+
+    if (!supabase) { setSubmitting(false); setErrorMsg('Database not available'); return; }
 
     try {
       const { data, error } = await supabase
