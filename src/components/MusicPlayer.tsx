@@ -1,33 +1,31 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import { Volume2, VolumeX, Music } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-// Configurable file locations:
-// - MUSIC FILE PLACEHOLDER: /birthday-music.mp3
-
-interface MusicPlayerProps {
-  shouldPlay: boolean;
+export interface MusicPlayerHandle {
+  play: () => void;
 }
 
-export default function MusicPlayer({ shouldPlay }: MusicPlayerProps) {
+interface MusicPlayerProps {
+  show: boolean;
+}
+
+export default forwardRef<MusicPlayerHandle, MusicPlayerProps>(function MusicPlayer({ show }, ref) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [hasError, setHasError] = useState(false);
 
-  useEffect(() => {
-    if (shouldPlay && audioRef.current && !isPlaying && !hasError) {
-      // Attempt to autoplay after user interaction (celebration launch)
-      audioRef.current.play()
-        .then(() => {
-          setIsPlaying(true);
-        })
-        .catch((err) => {
-          console.warn('Autoplay blocked by browser. User must click play button manually.', err);
-        });
-    }
-  }, [shouldPlay, isPlaying, hasError]);
+  useImperativeHandle(ref, () => ({
+    play: () => {
+      if (audioRef.current && !hasError) {
+        audioRef.current.play()
+          .then(() => setIsPlaying(true))
+          .catch(() => {});
+      }
+    },
+  }));
 
   const togglePlay = () => {
     if (!audioRef.current || hasError) return;
@@ -53,7 +51,7 @@ export default function MusicPlayer({ shouldPlay }: MusicPlayerProps) {
   };
 
   if (hasError) {
-    return null; // Fail silently as requested: if file does not exist, the website still works without breaking
+    return null;
   }
 
   return (
@@ -65,7 +63,7 @@ export default function MusicPlayer({ shouldPlay }: MusicPlayerProps) {
         onError={handleAudioError}
         preload="auto"
       />
-      {shouldPlay && (
+      {show && (
         <motion.div
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -79,7 +77,6 @@ export default function MusicPlayer({ shouldPlay }: MusicPlayerProps) {
             {isPlaying ? (
               <>
                 <Volume2 className="w-5 h-5 text-pink-300" />
-                {/* Pulsing rings around the button when playing */}
                 <span className="absolute inset-0 rounded-full border border-pink-400/50 animate-ping pointer-events-none scale-105"></span>
                 <span className="absolute inset-0 rounded-full border border-purple-400/30 animate-pulse pointer-events-none scale-125"></span>
               </>
@@ -87,7 +84,6 @@ export default function MusicPlayer({ shouldPlay }: MusicPlayerProps) {
               <VolumeX className="w-5 h-5 text-gray-400" />
             )}
             
-            {/* Spinning disk effect when playing */}
             <motion.div
               animate={{ rotate: isPlaying ? 360 : 0 }}
               transition={{ repeat: Infinity, duration: 4, ease: 'linear' }}
@@ -96,7 +92,6 @@ export default function MusicPlayer({ shouldPlay }: MusicPlayerProps) {
               <Music className="w-3 h-3 text-white" />
             </motion.div>
 
-            {/* Hover Tooltip */}
             <span className="absolute right-14 bg-slate-900/90 text-white text-xs px-2.5 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap border border-white/10 pointer-events-none">
               {isPlaying ? 'Pause Birthday Music' : 'Play Birthday Music'}
             </span>
@@ -105,4 +100,4 @@ export default function MusicPlayer({ shouldPlay }: MusicPlayerProps) {
       )}
     </>
   );
-}
+});

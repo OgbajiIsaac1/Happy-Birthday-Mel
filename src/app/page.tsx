@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import LaunchScreen from '@/components/LaunchScreen';
 import FloatingHearts from '@/components/FloatingHearts';
-import MusicPlayer from '@/components/MusicPlayer';
+import MusicPlayer, { type MusicPlayerHandle } from '@/components/MusicPlayer';
 import HeroSection from '@/components/HeroSection';
 import Countdown from '@/components/Countdown';
 import MemoryGallery from '@/components/MemoryGallery';
@@ -22,8 +22,10 @@ import ShareButton from '@/components/ShareButton';
 
 export default function Home() {
   const [isLaunched, setIsLaunched] = useState(false);
+  const musicRef = useRef<MusicPlayerHandle>(null);
 
   const handleLaunch = () => {
+    musicRef.current?.play();
     setIsLaunched(true);
   };
 
@@ -57,7 +59,7 @@ export default function Home() {
             <FloatingHearts active={isLaunched} />
 
             {/* Floating Action Button (FAB) for music play/pause toggle */}
-            <MusicPlayer shouldPlay={isLaunched} />
+            <MusicPlayer ref={musicRef} show={isLaunched} />
 
             {/* Scrollable Container of Surprises */}
             <main className="flex-grow w-full max-w-5xl mx-auto flex flex-col relative z-20">
