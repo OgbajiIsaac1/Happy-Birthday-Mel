@@ -37,6 +37,9 @@ export default function Home() {
       <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-purple-500/5 rounded-full blur-[120px] pointer-events-none -z-10" />
       <div className="absolute bottom-0 right-1/4 w-[300px] h-[300px] bg-amber-500/5 rounded-full blur-[100px] pointer-events-none -z-10" />
 
+      {/* Audio element always mounted so ref is available on launch click */}
+      <MusicPlayer ref={musicRef} show={isLaunched} />
+
       <AnimatePresence mode="wait">
         {!isLaunched ? (
           <motion.div
@@ -57,9 +60,6 @@ export default function Home() {
           >
             {/* Ambient Flying Hearts & Balloons (particle system) */}
             <FloatingHearts active={isLaunched} />
-
-            {/* Floating Action Button (FAB) for music play/pause toggle */}
-            <MusicPlayer ref={musicRef} show={isLaunched} />
 
             {/* Scrollable Container of Surprises */}
             <main className="flex-grow w-full max-w-5xl mx-auto flex flex-col relative z-20">
