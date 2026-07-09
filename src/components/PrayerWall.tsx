@@ -37,7 +37,7 @@ export default function PrayerWall() {
 
   // Validation rules
   const MIN_PRAYER_LENGTH = 5;
-  const MAX_PRAYER_LENGTH = 700;
+  const MAX_PRAYER_LENGTH = 10000;
 
   useEffect(() => {
     const fetchPrayers = async () => {

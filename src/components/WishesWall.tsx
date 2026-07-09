@@ -38,7 +38,7 @@ export default function WishesWall() {
 
   // Validation rules
   const MIN_WISH_LENGTH = 5;
-  const MAX_WISH_LENGTH = 500;
+  const MAX_WISH_LENGTH = 10000;
 
   useEffect(() => {
     const fetchWishes = async () => {
