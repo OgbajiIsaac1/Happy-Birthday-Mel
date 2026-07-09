@@ -32,8 +32,8 @@ const MEMORIES: Memory[] = [
   { id: 14, url: '/images/mel14.jpeg', caption: 'Blessed to know you', description: 'Some people make life brighter — you are one of them.' },
   { id: 15, url: '/images/mel15.jpeg', caption: 'Celebrating you', description: 'Today and always, you deserve all the joy in the world.' },
   { id: 16, url: '/images/10.png', caption: 'Beautiful soul', description: 'Your kindness and warmth inspire everyone around you.' },
-  { id: 17, url: '/images/11.png', caption: 'One in a million', description: 'There is no one quite like you — and that is your superpower.' },
-  { id: 18, url: '/images/12.png', caption: 'Forever grateful', description: 'For every laugh, every hug, and every beautiful memory.' }
+  { id: 17, url: '/images/mel16.jpg', caption: 'One in a million', description: 'There is no one quite like you — and that is your superpower.' },
+  { id: 18, url: '/images/mel17.png', caption: 'Forever grateful', description: 'For every laugh, every hug, and every beautiful memory.' }
 ];
 
 export default function MemoryGallery() {
